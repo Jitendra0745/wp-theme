@@ -1,0 +1,73 @@
+ <?php 
+    $link = get_sub_field('cta');
+    if( $link ): 
+        $link_url = $link['url'];
+        $link_title = $link['title'];
+        $link_target = $link['target'] ? $link['target'] : '_self';
+        ?>
+        <a class="btn btn-primary" href="<?php echo esc_url( $link_url ); ?>" target="<?php echo esc_attr( $link_target ); ?>"><?php echo esc_html( $link_title ); ?></a>
+<?php endif; ?>
+
+
+<?php 
+    $rating = get_sub_field('rating');
+    for ($x = 1; $x <= 5; $x++) {
+        $class = ($x <= $rating) ? 'active' : '';
+        echo '<i class="icon-star '.$class.'"></i>';
+    }
+?>
+
+
+<div class="container">
+        <ul class="bread-crumb">
+            <li>
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>"><i class="icon-home"></i>Home</a>
+            </li>
+            <li>Providers</li>
+        </ul>
+    </div>
+
+
+    <section class="hero-block sm-hero-block xsm-hero-block" style="background-image: url(<?php the_sub_field('image'); ?>);">
+    <div class="container">
+        <div class="hero-content text-center large-content">
+            <h1 class="overlay-underline"><?php the_sub_field('title'); ?></h1>
+        </div>
+    </div>
+</section>
+
+<img src="<?php echo get_template_directory_uri()?>/assets/img/total-reviews.svg" alt="">
+
+<?php if(get_sub_field('bottom_image')) { 
+              $style = '';
+              if( get_sub_field('bottom_image') ){
+                  $image = get_sub_field('bottom_image');
+                  $style = 'background-image: url('.$image.')';
+              } ?>
+            <div class="content-img" style="<?php echo $style; ?>"></div>
+        <?php } ?>   
+
+
+        <?php if (have_rows('list')) { ?>
+           
+                    <?php while(have_rows('list')) { the_row(); ?>
+                        <li>
+                           lisit  
+                        </li>
+                    <?php } ?>
+          
+        <?php } ?>  
+
+
+        $post_tags = get_terms(array('taxonomy' => 'post_type_tag', 'include' => get_sub_field('pre_filter_by_tag')));
+
+        <?php
+                $terms = [];
+                $terms = get_the_terms(get_the_ID(), 'resource_type');
+                $term_names = wp_list_pluck($terms, 'name');
+                if (!empty($term_names)) {
+                    echo '<span class="r-type">' . implode(", ", $term_names) . ' </span>';
+                }
+            ?>
+
+<?php  echo (get_field('gated')) ? 'd-none' : ''; ?>
